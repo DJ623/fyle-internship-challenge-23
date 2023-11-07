@@ -1,0 +1,39 @@
+<p>{{profile.login}}</p>
+<img [src]="profile.avatar_url" alt="" width="200px"  style=" border-radius: 50%; " >
+
+<form action="submit">
+  <div>
+    <input style="border: 2px solid blue; border-radius: 10px;"
+      type="text"
+      placeholder="Search git users with username"
+      [(ngModel)]="username"
+      name="username"
+      (keyup)="findProfile(username, 0)"
+    />
+    <button class="large-button" (click)="findProfile(username, 0)" style="color: white; background-color: blue; border-radius: 10px;">Search</button>
+  </div>
+</form>
+<div *ngIf="profile">
+  <div>
+    <div *ngFor="let repo of repos">
+      <p>
+        {{ repo.name }}
+        <a href="{{ repo.html_url }}" target="_blank" style="color: blue;"
+          >View this project on github</a
+        >
+      </p>
+      <p style="color: teal;">{{ repo.description }}</p>
+      <br />
+    </div>
+  </div>
+
+  <div>
+    <button (click)="previousPage()" style="color: blue;" [disabled]="currentPage === 1">
+      Previous
+    </button>
+
+
+    
+    <button (click)="nextPage()" style="color: blue;">&nbsp; Next</button>
+  </div>
+</div>

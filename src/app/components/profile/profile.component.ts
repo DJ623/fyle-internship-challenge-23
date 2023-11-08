@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { FormsModule } from '@angular/forms';
+import { EmailValidator, FormsModule } from '@angular/forms';
 
 interface UserProfile {
   login: string;
   avatar_url: string;
+  bio: string;
+  email : string;
+  followers : number;
+  following : number;
   // other properties
 }
 
@@ -17,10 +21,15 @@ export class ProfileComponent {
   profile : UserProfile = {
     login: '',
     avatar_url: '',
+    bio: '',
+    email : '',
+    followers : 0,
+    following : 0
+
     // Initialize other properties as needed
   }; ;
   repos : any[] = [];
-  username : string = 'DJ623';
+  username : string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
@@ -43,6 +52,7 @@ export class ProfileComponent {
     this.apiService.getRepos(username,page,this.itemsPerPage).subscribe(repo => {
       console.log(repo);
       this.repos = repo;
+      
     })
   }
 

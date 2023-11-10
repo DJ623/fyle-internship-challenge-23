@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { EmailValidator, FormsModule } from '@angular/forms';
 
 interface UserProfile {
   login: string;
   avatar_url: string;
   bio: string;
-  email : string;
-  followers : number;
-  following : number;
-  // other properties
+  email: string;
+  followers: number;
+  following: number;
+}
+
+interface Repository {
+  name: string;
+  description: string;
+  language: string;
+  html_url: string;
 }
 
 @Component({
@@ -18,42 +23,54 @@ interface UserProfile {
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
-  profile : UserProfile = {
-    login: '',
-    avatar_url: '',
-    bio: '',
-    email : '',
-    followers : 0,
-    following : 0
-
-    // Initialize other properties as needed
-  }; ;
-  repos : any[] = [];
-  username : string = '';
+  profile: UserProfile = this.emptyUserProfile();
+  repos: Repository[] = [];
+  username: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
+  error: string | null = null;
+  flag : boolean = false;
 
-  constructor(private apiService : ApiService)
-  { }
+  constructor(private apiService: ApiService) {}
 
-  searchRepositories() {
-    if (this.username) {
-      this.findProfile(this.username, this.currentPage);
+  findProfile(username: string, page: number) {
+    if (username.length > 0) {
+      this.error = null; // Reset error on each new search
+
+      this.apiService.getUser(username).subscribe({
+        next: (profile: UserProfile) => {
+          console.log(profile);
+          this.profile = profile;
+          this.fetchRepos(username, page);
+        },
+        error: (error) => {
+          console.error('Error fetching Profile', error);
+          this.profile = this.emptyUserProfile();
+          this.error = 'User Not Found !';
+        }
+      });
+    } else {
+      console.log('Empty username entered');
+      this.profile = this.emptyUserProfile(); // Reset profile
+      this.repos = []; // Reset repos
+      this.error = 'Empty username entered';
+      
+      
     }
   }
 
-  findProfile(username: string, page: number)
-  {
-    this.apiService.getUser(username).subscribe(data => {
-      console.log(data);
-      this.profile = data;
+  private fetchRepos(username: string, page: number) {
+    this.apiService.getRepos(username, page, this.itemsPerPage).subscribe({
+      next: (repos: Repository[]) => {
+        console.log(repos);
+        this.repos = repos;
+      },
+      error: (error) => {
+        console.error('Error fetching repositories:', error);
+        this.error = 'Error fetching repositories';
+        
+      }
     });
-
-    this.apiService.getRepos(username,page,this.itemsPerPage).subscribe(repo => {
-      console.log(repo);
-      this.repos = repo;
-      
-    })
   }
 
   previousPage() {
@@ -62,14 +79,23 @@ export class ProfileComponent {
       this.findProfile(this.username, this.currentPage);
     }
   }
-  
+
   nextPage() {
     this.currentPage++;
     this.findProfile(this.username, this.currentPage);
   }
 
-  ngOnInit() {
+  
+  emptyUserProfile(): UserProfile {
+    return {
+      login: '',
+      avatar_url: '',
+      bio: '',
+      email: '',
+      followers: 0,
+      following: 0
+    };
   }
 
-
+  ngOnInit() {}
 }

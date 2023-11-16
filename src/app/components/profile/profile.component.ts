@@ -28,6 +28,7 @@ export class ProfileComponent {
   username: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
+  values: number[] = Array.from({ length: 100 }, (_, i) => i + 1);
   error: string | null = null;
   flag : boolean = false;
 
@@ -59,7 +60,7 @@ export class ProfileComponent {
     }
   }
 
-  private fetchRepos(username: string, page: number) {
+  fetchRepos(username: string, page: number) {
     this.apiService.getRepos(username, page, this.itemsPerPage).subscribe({
       next: (repos: Repository[]) => {
         console.log(repos);
@@ -82,6 +83,11 @@ export class ProfileComponent {
 
   nextPage() {
     this.currentPage++;
+    this.findProfile(this.username, this.currentPage);
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1; // Reset to the first page when items per page changes
     this.findProfile(this.username, this.currentPage);
   }
 

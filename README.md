@@ -37,6 +37,12 @@ You will hear back within 48 hours from us via email.
 
 Run `ng serve` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
+## For Testing the project 
+Run `ng test` in this repository
+
+## For production
+Run `ng build` in this repository
+
 ## Further help
 
 Visit the [Angular Documentation](https://angular.io/guide/styleguide) to learn more.

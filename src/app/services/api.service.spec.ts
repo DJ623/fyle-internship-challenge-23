@@ -56,8 +56,8 @@ describe('ApiService', () => {
       const dummyPage = 1;
       const dummyPerPage = 10;
       const dummyRepos: Repository[] = [
-        { name: 'repo1', description: 'Description 1', language: 'TypeScript', html_url: 'https://example.com/repo1' },
-        { name: 'repo2', description: 'Description 2', language: 'JavaScript', html_url: 'https://example.com/repo2' }
+        { name: 'repo1', description: 'Description 1', topics: ['TypeScript'], html_url: 'https://example.com/repo1' },
+        { name: 'repo2', description: 'Description 2', topics: ['JavaScript'], html_url: 'https://example.com/repo2' }
       ];
 
       service.getRepos(dummyUsername, dummyPage, dummyPerPage).subscribe(repos => {

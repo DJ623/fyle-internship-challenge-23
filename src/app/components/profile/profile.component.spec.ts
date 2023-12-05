@@ -31,7 +31,7 @@ describe('ProfileComponent', () => {
     const username = 'testuser';
     const page = 1;
     const mockProfile = { login: 'testuser', avatar_url: 'testurl', bio: 'test bio', email: 'test@test.com', followers: 5, following: 10 };
-    const mockRepos = [{ name: 'repo1', description: 'repo description', language: 'JavaScript', html_url: 'repo_url' }];
+    const mockRepos = [{ name: 'repo1', description: 'repo description', topics: ['JavaScript'], html_url: 'repo_url' }];
 
     spyOn(apiService, 'getUser').and.returnValue(of(mockProfile));
     spyOn(apiService, 'getRepos').and.returnValue(of(mockRepos));

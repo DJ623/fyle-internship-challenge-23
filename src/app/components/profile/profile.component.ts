@@ -13,7 +13,7 @@ interface UserProfile {
 interface Repository {
   name: string;
   description: string;
-  language: string;
+  topics: string[];
   html_url: string;
 }
 

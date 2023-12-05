@@ -16,7 +16,7 @@ export interface UserProfile {
 export interface Repository {
   name: string;
   description: string;
-  language: string;
+  topics: string[];
   html_url: string;
   // other properties
 }
